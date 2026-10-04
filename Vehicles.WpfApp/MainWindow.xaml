@@ -1,0 +1,88 @@
+﻿<Window x:Class="Vehicles.WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Vehicles"
+        Height="620"
+        Width="800"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+
+            <TextBlock Text="Add vehicle"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Margin="0,0,0,20"/>
+
+            <TextBlock Text="Type"/>
+            <ComboBox x:Name="VehicleTypeComboBox"
+                      SelectedIndex="0"
+                      Margin="0,5,0,15">
+                <ComboBoxItem Content="Car"/>
+                <ComboBoxItem Content="Boat"/>
+                <ComboBoxItem Content="AmphibiousCar"/>
+            </ComboBox>
+
+            <TextBlock Text="Make"/>
+            <TextBox x:Name="MakeTextBox"
+                     Margin="0,5,0,15"/>
+
+            <TextBlock Text="Model"/>
+            <TextBox x:Name="ModelTextBox"
+                     Margin="0,5,0,15"/>
+
+            <Button Content="Add vehicle"
+                    Height="35"
+                    Click="AddVehicle_Click"/>
+
+            <Separator Margin="0,20"/>
+
+            <TextBlock Text="Distance (km)"/>
+            <TextBox x:Name="DistanceTextBox"
+                     Text="10"
+                     Margin="0,5,0,15"/>
+
+            <Button Content="Move"
+                    Height="35"
+                    Click="MoveVehicle_Click"/>
+
+            <Button Content="Remove selected"
+                    Height="35"
+                    Margin="0,10,0,0"
+                    Click="RemoveVehicle_Click"/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+
+            <TextBlock Text="Vehicles"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Margin="0,0,0,10"/>
+
+            <ListBox x:Name="VehiclesListBox"
+                     Height="240"
+                     Margin="0,0,0,20"/>
+
+            <TextBlock Text="Activity log"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Margin="0,0,0,10"/>
+
+            <TextBox x:Name="LogTextBox"
+                     Height="250"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     AcceptsReturn="True"/>
+
+        </StackPanel>
+
+    </Grid>
+</Window>
