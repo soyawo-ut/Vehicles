@@ -8,12 +8,15 @@ namespace Vehicles.WpfApp
 {
     public partial class MainWindow : Window
     {
-        private readonly ObservableCollection<Vehicle> _vehicles = new();
+        private readonly ObservableCollection<Vehicle> _carGarage = new();
+        private readonly ObservableCollection<Vehicle> _boatGarage = new();
 
         public MainWindow()
         {
             InitializeComponent();
-            VehiclesListBox.ItemsSource = _vehicles;
+
+            CarGarageListBox.ItemsSource = _carGarage;
+            BoatGarageListBox.ItemsSource = _boatGarage;
         }
 
         private void AddVehicle_Click(object sender, RoutedEventArgs e)
@@ -37,24 +40,35 @@ namespace Vehicles.WpfApp
                 {
                     case "Car":
                         vehicle = new Car(make, model);
+
+                        SignalGarage(_carGarage);
+
+                        _carGarage.Add(vehicle);
+                        Log($"Added to car garage: {vehicle.Make} {vehicle.Model}");
                         break;
 
                     case "Boat":
                         vehicle = new Boat(make, model);
+
+                        SignalGarage(_boatGarage);
+
+                        _boatGarage.Add(vehicle);
+                        Log($"Added to boat garage: {vehicle.Make} {vehicle.Model}");
                         break;
 
                     case "AmphibiousCar":
                         vehicle = new AmphibiousCar(make, model);
+
+                        SignalGarage(_carGarage);
+
+                        _carGarage.Add(vehicle);
+                        Log($"Added to car garage: {vehicle.Make} {vehicle.Model}");
                         break;
 
                     default:
                         Log("Unknown vehicle type.");
                         return;
                 }
-
-                _vehicles.Add(vehicle);
-
-                Log($"Added: {vehicle.Make} {vehicle.Model}");
 
                 MakeTextBox.Clear();
                 ModelTextBox.Clear();
@@ -65,9 +79,19 @@ namespace Vehicles.WpfApp
             }
         }
 
-        private void MoveVehicle_Click(object sender, RoutedEventArgs e)
+        private void MoveCar_Click(object sender, RoutedEventArgs e)
         {
-            if (VehiclesListBox.SelectedItem is not Vehicle vehicle)
+            MoveSelectedVehicle(CarGarageListBox);
+        }
+
+        private void MoveBoat_Click(object sender, RoutedEventArgs e)
+        {
+            MoveSelectedVehicle(BoatGarageListBox);
+        }
+
+        private void MoveSelectedVehicle(ListBox listBox)
+        {
+            if (listBox.SelectedItem is not Vehicle vehicle)
             {
                 Log("Select a vehicle first.");
                 return;
@@ -92,7 +116,7 @@ namespace Vehicles.WpfApp
                 Log(message);
                 Log($"Odometer: {vehicle.Odometer:0.##} km");
 
-                VehiclesListBox.Items.Refresh();
+                listBox.Items.Refresh();
             }
             catch (ArgumentException ex)
             {
@@ -100,17 +124,47 @@ namespace Vehicles.WpfApp
             }
         }
 
-        private void RemoveVehicle_Click(object sender, RoutedEventArgs e)
+        private void RemoveCar_Click(object sender, RoutedEventArgs e)
         {
-            if (VehiclesListBox.SelectedItem is not Vehicle vehicle)
+            RemoveSelectedVehicle(CarGarageListBox, _carGarage);
+        }
+
+        private void RemoveBoat_Click(object sender, RoutedEventArgs e)
+        {
+            RemoveSelectedVehicle(BoatGarageListBox, _boatGarage);
+        }
+
+        private void RemoveSelectedVehicle(
+            ListBox listBox,
+            ObservableCollection<Vehicle> garage)
+        {
+            if (listBox.SelectedItem is not Vehicle vehicle)
             {
                 Log("Select a vehicle first.");
                 return;
             }
 
-            _vehicles.Remove(vehicle);
+            garage.Remove(vehicle);
 
             Log($"Removed: {vehicle.Make} {vehicle.Model}");
+
+            BlinkGarage(garage);
+        }
+
+        private void SignalGarage(ObservableCollection<Vehicle> garage)
+        {
+            foreach (Vehicle vehicle in garage)
+            {
+                Log(vehicle.Signal());
+            }
+        }
+
+        private void BlinkGarage(ObservableCollection<Vehicle> garage)
+        {
+            foreach (Vehicle vehicle in garage)
+            {
+                Log(vehicle.BlinkLights());
+            }
         }
 
         private void Log(string message)

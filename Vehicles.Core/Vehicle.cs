@@ -21,13 +21,24 @@
         protected void AddKm(double km)
         {
             if (km <= 0)
-                throw new ArgumentOutOfRangeException(nameof(km),
+                throw new ArgumentOutOfRangeException(
+                    nameof(km),
                     "Distance must be greater than zero.");
 
             Odometer += km;
         }
 
         public abstract string Move(double km);
+
+        public virtual string Signal()
+        {
+            return $"{Make} {Model} signals.";
+        }
+
+        public virtual string BlinkLights()
+        {
+            return $"{Make} {Model} blinks lights.";
+        }
 
         public override string ToString()
         {
